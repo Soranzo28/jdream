@@ -8,3 +8,7 @@ dependencies:
     ChronoStore:
       load: BEFORE
       required: false
+
+    SkinsRestorer:
+      load: BEFORE
+      required: false

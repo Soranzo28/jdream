@@ -14,13 +14,20 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.skinsrestorer.api.PropertyUtils;
+import net.skinsrestorer.api.SkinsRestorer;
+import net.skinsrestorer.api.SkinsRestorerProvider;
+import net.skinsrestorer.api.property.SkinProperty;
 import okhttp3.OkHttpClient;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.awt.*;
+import java.util.Optional;
+import java.util.UUID;
 
 public class Discord {
 
@@ -28,6 +35,8 @@ public class Discord {
     private final JDA jda;
     private final WebhookClient webhook;
     private OkHttpClient httpClient;
+    private SkinsRestorer skinsRestorer;
+
 
     private static Discord instance = null;
     private Config config = null;
@@ -75,17 +84,46 @@ public class Discord {
         guild.upsertCommand("leaderboard", "Mostra top jogadores ativos do servidor").queue();
         guild.upsertCommand("dump", "Dump da database").queue();
 
+        if (Bukkit.getPluginManager().getPlugin("SkinsRestorer") != null) {
+            skinsRestorer = SkinsRestorerProvider.get();
+            jd.getLogger().info("SkinsRestorer conectado.");
+        }
     }
 
     // Minecraft message -> Discord (chat channel)
     public void sendToDiscord(String username, String user_uuid, String content) {
+        String avatarUrl = getAvatarUrl(username, user_uuid);
+
         WebhookMessageBuilder builder = new WebhookMessageBuilder()
                 .setUsername(username)
-                .setAvatarUrl("https://mc-heads.net/avatar/" + user_uuid + "/128")
+                .setAvatarUrl(avatarUrl)
                 .setContent(content);
 
         webhook.send(builder.build());
     }
+
+    private String getAvatarUrl(String username, String user_uuid) {
+        if (skinsRestorer != null) {
+            try {
+                Optional<SkinProperty> skin = skinsRestorer
+                        .getPlayerStorage()
+                        .getSkinForPlayer(UUID.fromString(user_uuid), username);
+
+                if (skin.isPresent()) {
+                    String textureHash = PropertyUtils.getSkinTextureHash(skin.get());
+
+                    if (textureHash != null && !textureHash.isBlank()) {
+                        return "https://mc-heads.net/avatar/" + textureHash + "/128";
+                    }
+                }
+            } catch (Exception e) {
+                jd.getLogger().warning("Erro ao buscar skin do SkinsRestorer para " + username + ": " + e.getMessage());
+            }
+        }
+
+        return "https://mc-heads.net/avatar/" + username + "/128";
+    }
+
 
     // Command output -> Discord (adm channel)
     public void logCommandOutput(CommandInfo commandInfo) {
