@@ -1,5 +1,5 @@
 name: Jdream
-version: 1.0
+version: 1.0.0
 main: dev.soranzo.Jdream
 api-version: '26.1.2'
 description: Integrates a discord server with minecraft server

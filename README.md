@@ -43,7 +43,7 @@ All fields are required — the plugin refuses to enable if any of them is missi
 mvn package
 ```
 
-The generated jar will be at `target/jdream-1.0-SNAPSHOT.jar`. Copy it into the server's `plugins/` folder.
+The generated jar will be at `target/jdream-1.0.0.jar`. Copy it into the server's `plugins/` folder.
 
 ## Project structure
 
