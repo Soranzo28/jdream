@@ -5,8 +5,10 @@ A [Paper](https://papermc.io/) plugin that bridges a Minecraft server with a Dis
 ## Features
 
 - **Chat bridge**: Minecraft chat messages are relayed to a Discord channel via webhook (with the player's name and avatar), and messages sent in that Discord channel are broadcast back into the Minecraft chat.
-- **Skin-aware avatars**: if [SkinsRestorer](https://www.spigotmc.org/resources/skinsrestorer.2124/) is installed, the Discord webhook avatar uses the player's actual restored skin instead of their vanilla Mojang skin. Falls back to a username-based avatar otherwise.
+- **Skin-aware avatars**: if [SkinsRestorer](https://www.spigotmc.org/resources/skinsrestorer.2124/) is installed, every avatar shown on Discord (chat, join/quit, achievements, deaths) uses the player's actual restored skin instead of their vanilla Mojang skin. Falls back to a username-based avatar otherwise.
 - **Join/quit embeds**: player join and quit events are posted to the chat channel as Discord embeds.
+- **Achievement log**: advancements unlocked by players are posted to the log channel, using the same message vanilla Minecraft would announce in chat.
+- **Death/kill log**: player deaths are posted to the log channel, with a distinct embed for PvP kills versus regular deaths (fall, mobs, drowning, etc.), using the vanilla death message.
 - **Remote console commands**: messages sent in a configured admin channel are executed as server console commands, with a success/error embed reply showing the output.
 - **Slash commands**: `/leaderboard` shows the top active players (requires the optional [ChronoStore](https://github.com/Soranzo28) integration).
 
@@ -31,7 +33,7 @@ token: ""           # Discord bot token
 guild-id: ""         # Discord server (guild) ID
 chat-channel-id: ""  # channel mirrored to/from Minecraft chat
 adm-channel-id: ""   # channel used to run remote console commands
-log-channel-id: ""   # channel used for join/quit logs
+log-channel-id: ""   # channel used for achievement and death/kill logs
 webhook-url: ""      # webhook URL used to post Minecraft chat messages
 ```
 
@@ -43,7 +45,7 @@ All fields are required — the plugin refuses to enable if any of them is missi
 mvn package
 ```
 
-The generated jar will be at `target/jdream-1.0.0.jar`. Copy it into the server's `plugins/` folder.
+The generated jar will be at `target/jdream-1.0.1.jar`. Copy it into the server's `plugins/` folder.
 
 ## Project structure
 

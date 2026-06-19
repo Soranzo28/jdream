@@ -140,13 +140,34 @@ public class Discord {
     }
 
     public void logJoinQuitEvent(String username, String uuid, boolean joined) {
+        String avatarUrl = getAvatarUrl(username, uuid);
         MessageEmbed msg;
         if (joined) {
-            msg = MakeEmbed.joinMessage(username, uuid);
+            msg = MakeEmbed.joinMessage(username, avatarUrl);
         } else{
-            msg = MakeEmbed.quitMessage(username, uuid);
+            msg = MakeEmbed.quitMessage(username, avatarUrl);
         }
         TextChannel channel = jda.getTextChannelById(config.chatChannelId());
+        channel.sendMessageEmbeds(msg).queue();
+    }
+
+    // Player advancement -> Discord (log channel)
+    public void logAdvancement(String username, String uuid, String advancementText) {
+        String avatarUrl = getAvatarUrl(username, uuid);
+        MessageEmbed msg = MakeEmbed.advancementMessage(advancementText, avatarUrl);
+
+        TextChannel channel = jda.getTextChannelById(config.logChannelId());
+        channel.sendMessageEmbeds(msg).queue();
+    }
+
+    // Player death/kill -> Discord (log channel)
+    public void logPlayerDeath(String username, String uuid, String deathText, boolean killedByPlayer) {
+        String avatarUrl = getAvatarUrl(username, uuid);
+        MessageEmbed msg = killedByPlayer
+                ? MakeEmbed.killMessage(deathText, avatarUrl)
+                : MakeEmbed.deathMessage(deathText, avatarUrl);
+
+        TextChannel channel = jda.getTextChannelById(config.logChannelId());
         channel.sendMessageEmbeds(msg).queue();
     }
 

@@ -48,23 +48,56 @@ public class MakeEmbed {
                 .build();
     }
 
-    public static MessageEmbed joinMessage(String username, String uuid) {
+    public static MessageEmbed joinMessage(String username, String avatarUrl) {
         return new EmbedBuilder()
                 .setTitle("✅ Jogador Entrou")
                 .setColor(new Color(46, 204, 113))
-                .setThumbnail("https://mc-heads.net/avatar/" + uuid + "/128")
+                .setThumbnail(avatarUrl)
                 .setDescription("**" + username + "** entrou no servidor")
                 .setFooter("Jdream", "https://i.imgur.com/9v8Wg7e.jpeg")
                 .setTimestamp(Instant.now())
                 .build();
     }
 
-    public static MessageEmbed quitMessage(String username, String uuid) {
+    public static MessageEmbed quitMessage(String username, String avatarUrl) {
         return new EmbedBuilder()
                 .setTitle("❌ Jogador Saiu")
                 .setColor(new Color(231, 76, 60))
-                .setThumbnail("https://mc-heads.net/avatar/" + uuid + "/128")
+                .setThumbnail(avatarUrl)
                 .setDescription("**" + username + "** saiu do servidor")
+                .setFooter("Jdream", "https://i.imgur.com/9v8Wg7e.jpeg")
+                .setTimestamp(Instant.now())
+                .build();
+    }
+
+    public static MessageEmbed advancementMessage(String advancementText, String avatarUrl) {
+        return new EmbedBuilder()
+                .setTitle("🏆 Conquista Desbloqueada")
+                .setColor(new Color(241, 196, 15))
+                .setThumbnail(avatarUrl)
+                .setDescription(advancementText)
+                .setFooter("Jdream", "https://i.imgur.com/9v8Wg7e.jpeg")
+                .setTimestamp(Instant.now())
+                .build();
+    }
+
+    public static MessageEmbed killMessage(String deathText, String avatarUrl) {
+        return new EmbedBuilder()
+                .setTitle("⚔️ PvP")
+                .setColor(new Color(231, 76, 60))
+                .setThumbnail(avatarUrl)
+                .setDescription(deathText)
+                .setFooter("Jdream", "https://i.imgur.com/9v8Wg7e.jpeg")
+                .setTimestamp(Instant.now())
+                .build();
+    }
+
+    public static MessageEmbed deathMessage(String deathText, String avatarUrl) {
+        return new EmbedBuilder()
+                .setTitle("💀 Jogador Morreu")
+                .setColor(new Color(149, 165, 166))
+                .setThumbnail(avatarUrl)
+                .setDescription(deathText)
                 .setFooter("Jdream", "https://i.imgur.com/9v8Wg7e.jpeg")
                 .setTimestamp(Instant.now())
                 .build();
