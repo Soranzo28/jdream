@@ -34,15 +34,14 @@ public class DiscordListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent message) {
-        if (message.getAuthor().isBot()) return;
 
         String channelId = message.getChannel().getId();
+
+        if (!channelId.equals(config.admChannelId()) && message.getAuthor().isBot()) { return; }
+
         String senderName = message.getAuthor().getEffectiveName();
         String senderAvatarUrl = message.getAuthor().getAvatarUrl();
         String content = message.getMessage().getContentDisplay();
-
-        Logger.getLogger("Jdream").info("Canal recebido: " + channelId);
-        Logger.getLogger("Jdream").info("Canal adm config: " + config.admChannelId());
 
         // Message sent to minecraft server
         if (channelId.equals(config.chatChannelId())) {
